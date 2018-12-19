@@ -21,7 +21,7 @@
             "src/helpers.php"
         ],
         "psr-4": {
-            "Eseath\\Helpers\\Tests": "tests/"
+            "Eseath\\Helpers\\Tests\\": "tests/"
         }
     }
 }
