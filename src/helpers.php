@@ -41,3 +41,42 @@ if (!function_exists('pluralize')) {
         return $include_number ? $number . ' ' . $result : $result;
     }
 }
+
+if (!function_exists('countWords')) {
+    /**
+     * Counts words in the specified text.
+     *
+     * @param  string $text
+     * @return int
+     */
+    function countWords(string $text) : int
+    {
+        static $charlist;
+
+        if ($charlist === null) {
+            $charlist = '';
+
+            for ($i = 192; $i < 256; $i++) {
+                $charlist .= chr($i);
+            }
+
+            $charlist = iconv('cp1251', 'utf-8', $charlist);
+        }
+
+        return str_word_count($text, 0, $charlist);
+    }
+}
+
+if (!function_exists('estimateReadingTime')) {
+    /**
+     * Estimates reading time of the specified text in seconds.
+     *
+     * @param  string  $text
+     * @param  int     $words_per_minute
+     * @return int
+     */
+    function estimateReadingTime(string $text, int $words_per_minute = 120) : int
+    {
+        return (int) floor(countWords($text) % $words_per_minute / ($words_per_minute / 60));
+    }
+}

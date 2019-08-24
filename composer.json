@@ -10,7 +10,8 @@
         "functions"
     ],
     "require": {
-        "php": ">=7.0"
+        "php": ">=7.0",
+        "ext-iconv": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^6",
