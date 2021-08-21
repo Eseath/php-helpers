@@ -2,81 +2,48 @@
 
 declare(strict_types=1);
 
-if (!function_exists('pluralize')) {
-    /**
-     * Pluralize.
-     *
-     * @param  int    $number
-     * @param  array  $declension
-     * @param  bool   $include_number
-     * @return string
-     */
-    function pluralize(int $number, array $declension, bool $include_number = true) : string
-    {
-        $i = $number % 100;
+namespace Eseath\Helpers;
 
-        if (!isset($declension[2])) {
-            $declension[2] = $declension[1];
-        }
+/**
+ * Returns correct plural form of message for count.
+ *
+ * @param string[] $forms
+ */
+function pluralize(int $number, array $forms, bool $include_number = true) : string
+{
+    $i = $number % 100;
 
-        if ($i >= 11 && $i <= 19) {
-            $result = $declension[2];
-        } else {
-            $i %= 10;
-
-            switch ($i) {
-                case 1:
-                    $result = $declension[0];
-                    break;
-                case 2:
-                case 3:
-                case 4:
-                    $result = $declension[1];
-                    break;
-                default:
-                    $result = $declension[2];
-            }
-        }
-
-        return $include_number ? $number . ' ' . $result : $result;
+    if (!isset($forms[2])) {
+        $forms[2] = $forms[1];
     }
+
+    if ($i >= 11 && $i <= 19) {
+        $result = $forms[2];
+    } else {
+        $i %= 10;
+        $result = match ($i) {
+            1 => $forms[0],
+            2, 3, 4 => $forms[1],
+            default => $forms[2],
+        };
+    }
+
+    return $include_number ? "$number $result" : $result;
 }
 
-if (!function_exists('countWords')) {
-    /**
-     * Counts words in the specified text.
-     *
-     * @param  string $text
-     * @return int
-     */
-    function countWords(string $text) : int
-    {
-        static $charlist;
+/**
+ * Returns the data as a data URL representing the image file's data as a base64 encoded string.
+ *
+ * @example 'data:image/png;base64,iVBORw0KGgoAAAANSUhEU...BJRU5ErkJggg=='
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
+ */
+function readImageAsDataURL(string $path) : string
+{
+    $mime_type = mime_content_type($path);
 
-        if ($charlist === null) {
-            $charlist = '';
-
-            for ($i = 192; $i < 256; $i++) {
-                $charlist .= chr($i);
-            }
-
-            $charlist = iconv('cp1251', 'utf-8', $charlist);
-        }
-
-        return str_word_count($text, 0, $charlist);
+    if (!str_contains('image/jpeg|image/png|image/gif', $mime_type)) {
+        throw new \InvalidArgumentException("File must be is image. '$mime_type' given.");
     }
-}
 
-if (!function_exists('estimateReadingTime')) {
-    /**
-     * Estimates reading time of the specified text in seconds.
-     *
-     * @param  string  $text
-     * @param  int     $words_per_minute
-     * @return int
-     */
-    function estimateReadingTime(string $text, int $words_per_minute = 120) : int
-    {
-        return (int) floor(countWords($text) % $words_per_minute / ($words_per_minute / 60));
-    }
+    return "data:$mime_type;base64," . base64_encode(file_get_contents($path));
 }
