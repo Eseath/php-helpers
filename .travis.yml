@@ -1,10 +1,7 @@
 language: php
 
 php:
-    - 7.0
-    - 7.1
-    - 7.2
-    - 7.3
+    - 8.0
 
 sudo: false
 
@@ -14,4 +11,3 @@ before_script:
 
 script:
     - vendor/bin/phpunit
-    - vendor/bin/phpcs --standard=psr2 src/ tests/
