@@ -47,3 +47,11 @@ function readImageAsDataURL(string $path) : string
 
     return "data:$mime_type;base64," . base64_encode(file_get_contents($path));
 }
+
+/** Capitalizes first letter of given string. */
+function capitalizeFirstLetter(string $text, string $encoding = 'utf-8') : string
+{
+    return
+        mb_strtoupper(mb_substr($text, 0, 1, $encoding), $encoding) .
+        mb_substr($text, 1, null, $encoding);
+}
