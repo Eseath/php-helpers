@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Apivate\Helpers\Tests;
+namespace Eseath\Helpers\Tests;
 
 use PHPUnit\Framework\TestCase;
 
