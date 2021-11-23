@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace Eseath\Helpers;
 
-/**
- * Returns correct plural form of message for count.
- *
- * @param string[] $forms
- */
+/** Returns correct plural form of message for count. */
 function pluralize(int $number, array $forms, bool $include_number = true) : string
 {
     $i = $number % 100;
