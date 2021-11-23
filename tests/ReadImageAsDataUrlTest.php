@@ -40,4 +40,12 @@ final class ReadImageAsDataUrlTest extends TestCase
 
         self::assertEquals($expected, $result);
     }
+
+    public function testWEBPMustBeConvertedToBase64Url() : void
+    {
+        $expected = 'data:image/webp;base64,UklGRhwAAABXRUJQVlA4TBAAAAAvAAAAEAfQ//5H/wIR0f8A';
+        $result = readImageAsDataURL(__DIR__ . '/assets/image.1x1.webp');
+
+        self::assertEquals($expected, $result);
+    }
 }

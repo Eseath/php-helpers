@@ -37,7 +37,7 @@ function readImageAsDataURL(string $path) : string
 {
     $mime_type = mime_content_type($path);
 
-    if (!str_contains('image/jpeg|image/png|image/gif', $mime_type)) {
+    if (!str_contains('image/jpeg|image/png|image/gif|image/webp', $mime_type)) {
         throw new \InvalidArgumentException("File must be is image. '$mime_type' given.");
     }
 
