@@ -51,3 +51,23 @@ function capitalizeFirstLetter(string $text, string $encoding = 'utf-8') : strin
         mb_strtoupper(mb_substr($text, 0, 1, $encoding), $encoding) .
         mb_substr($text, 1, null, $encoding);
 }
+
+/** Parses key="value" from string into array. */
+function kv2array(string $content) : array
+{
+    $variables = [];
+
+    preg_match_all(
+        '/([a-z_\d]+)="([\w\d\s.\-\/_();:,+=*%&?]+)"/i',
+        $content,
+        $matches,
+        PREG_SET_ORDER,
+    );
+
+    foreach ($matches as $match) {
+        [, $key, $value] = $match;
+        $variables[$key] = $value;
+    }
+
+    return $variables;
+}
